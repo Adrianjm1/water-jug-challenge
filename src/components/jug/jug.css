@@ -1,0 +1,13 @@
+.jugLabel {
+    margin: 10px 0px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* flex-direction: column; */
+    gap: 10px;
+}
+
+.jugLabel input {
+    padding: 10px;
+    /* Space inside the input */
+}
