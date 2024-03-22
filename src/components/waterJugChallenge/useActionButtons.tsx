@@ -20,9 +20,9 @@ export const useWaterJugChallenge = () => {
     };
 
     const handleClean = () => {
-        setJugX(2);
-        setJugY(100);
-        setGoal(96);
+        setJugX(0);
+        setJugY(0);
+        setGoal(6);
         setSteps([]);
         toast.success('Successfully cleaned!')
     }
