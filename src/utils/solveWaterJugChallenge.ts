@@ -26,7 +26,7 @@ function solveWaterJugChallenge(x: number, y: number, z: number): Step[] | "No s
     const [[jugX, jugY], steps] = queue.shift()!;
 
     // Si este estado cumple con la meta, devuelve los pasos para llegar a él
-    if (jugX === z || jugY === z || jugX + jugY === z) {
+    if (jugX === z || jugY === z ) {
       return steps;
     }
 
