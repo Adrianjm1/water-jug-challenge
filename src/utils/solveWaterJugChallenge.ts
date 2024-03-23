@@ -1,101 +1,65 @@
-// Define el tipo de un paso, que incluye el estado de los jarros después del paso y la acción realizada
+// Define the type of a step, which includes the state of the jugs after the step and the action performed
 type Step = {
   jugX: number;
   jugY: number;
   action: string;
 };
 
-// Define el tipo de un estado, que es una tupla de dos números representando las cantidades de agua en los jarros
+// Define the type of a state, which is a tuple of two numbers representing the amounts of water in the jugs
 type State = [number, number];
 
-// La función principal que resuelve el problema
+// The main function that solves the problem
 function solveWaterJugChallenge(x: number, y: number, z: number): Step[] | "No solution" {
-  // Si la cantidad de agua que queremos medir es mayor que la capacidad de ambos jarros, no hay solución
+  // If the amount of water we want to measure is greater than the capacity of both jugs, there is no solution
   if (z > x && z > y) {
     return "No solution";
   }
 
-  // Inicializa la cola de BFS con el estado inicial, que es ambos jarros vacíos, y sin pasos realizados
+  // Initialize the BFS queue with the initial state, which is both jugs empty, and no steps performed
   const queue: [State, Step[]][] = [[[0, 0], []]];
-  // Inicializa el conjunto de estados visitados con el estado inicial
+  // Initialize the set of visited states with the initial state
   const visited: { [key: string]: boolean } = { '0,0': true };
 
-  // Mientras haya estados en la cola
+  // While there are states in the queue
   while (queue.length > 0) {
-    // Toma el primer estado de la cola y los pasos para llegar a él
+    // Take the first state from the queue and the steps to reach it
     const [[jugX, jugY], steps] = queue.shift()!;
 
-    // Si este estado cumple con la meta, devuelve los pasos para llegar a él
-    if (jugX === z || jugY === z ) {
+    // If this state meets the goal, return the steps to reach it
+    if (jugX === z || jugY === z) {
       return steps;
     }
 
-    // Genera todos los estados posibles a partir del estado actual
+    // Generate all possible states from the current state
     const nextStates: [State, Step][] = [
-      // Llena el jarro X desde la fuente
+      // Fill jug X from the source
       [[x, jugY], { jugX: x, jugY, action: "Fill Jug X" }],
-      // Llena el jarro Y desde la fuente
+      // Fill jug Y from the source
       [[jugX, y], { jugX, jugY: y, action: "Fill Jug Y" }],
-      // Vacía el jarro X
+      // Empty jug X
       [[0, jugY], { jugX: 0, jugY, action: "Empty Jug X" }],
-      // Vacía el jarro Y
+      // Empty jug Y
       [[jugX, 0], { jugX, jugY: 0, action: "Empty Jug Y" }],
-      // Transfiere agua del jarro X al jarro Y hasta que el jarro Y esté lleno o el jarro X esté vacío
+      // Transfer water from jug X to jug Y until jug Y is full or jug X is empty
       [[Math.max(0, jugX + jugY - y), Math.min(y, jugX + jugY)], { jugX: Math.max(0, jugX + jugY - y), jugY: Math.min(y, jugX + jugY), action: "Transfer from Jug X to Jug Y" }],
-      // Transfiere agua del jarro Y al jarro X hasta que el jarro X esté lleno o el jarro Y esté vacío
+      // Transfer water from jug Y to jug X until jug X is full or jug Y is empty
       [[Math.min(x, jugX + jugY), Math.max(0, jugX + jugY - x)], { jugX: Math.min(x, jugX + jugY), jugY: Math.max(0, jugX + jugY - x), action: "Transfer from Jug Y to Jug X" }],
     ];
 
-    // Para cada estado posible
+    // For each possible state
     for (const [[nextJugX, nextJugY], step] of nextStates) {
-      // Si no ha sido visitado antes
+      // If it has not been visited before
       if (!visited[`${nextJugX},${nextJugY}`]) {
-        // Marca como visitado y agrega a la cola con los pasos para llegar a él
+        // Mark as visited and add to the queue with the steps to reach it
         visited[`${nextJugX},${nextJugY}`] = true;
         queue.push([[nextJugX, nextJugY], [...steps, step]]);
       }
     }
   }
 
-  // Si se han visitado todos los estados posibles y ninguno cumple con la meta, no hay solución
+  // If all possible states have been visited and none meet the goal, there is no solution
   return "No solution";
 }
 
-// Exporta la función para que pueda ser utilizada en otros módulos
+// Export the function so it can be used in other modules
 export default solveWaterJugChallenge;
-
-
-// type Step = {
-//     jugX: number;
-//     jugY: number;
-//     action: string;
-//   };
-  
-//   function solveWaterJugChallenge(x: number, y: number, z: number): Step[] | "No solution" {
-//     if (z > x && z > y) {
-//       return "No solution";
-//     }
-  
-//     const steps: Step[] = [];
-//     let jugX = 0;
-//     let jugY = 0;
-  
-//     while (jugX !== z && jugY !== z) {
-//       if (jugX === 0) {
-//         steps.push({ jugX: x, jugY, action: "Fill Jug X" });
-//         jugX = x;
-//       } else if (jugY === y) {
-//         steps.push({ jugX, jugY: 0, action: "Empty Jug Y" });
-//         jugY = 0;
-//       } else {
-//         const amount = Math.min(jugX, y - jugY);
-//         steps.push({ jugX: jugX - amount, jugY: jugY + amount, action: "Transfer from Jug X to Jug Y" });
-//         jugX -= amount;
-//         jugY += amount;
-//       }
-//     }
-  
-//     return steps;
-//   }
-  
-//   export default solveWaterJugChallenge;

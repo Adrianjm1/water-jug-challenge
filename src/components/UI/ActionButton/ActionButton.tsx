@@ -3,7 +3,7 @@ interface ActionButton {
     label: string
     onClick: () => void
     backgroundColor: string
-    disabled?: boolean; // Agrega esta línea
+    disabled?: boolean;
 }
 
 export const ActionButton = ({ label, onClick, backgroundColor, disabled }: ActionButton) => {
