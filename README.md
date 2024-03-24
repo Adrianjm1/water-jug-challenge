@@ -51,7 +51,3 @@ After starting the project, navigate to `http://localhost:5173/` in your web bro
 ## Contributing
 
 This project is not currently open for contributions.
-
-## License
-
-This project is licensed under the MIT License.
